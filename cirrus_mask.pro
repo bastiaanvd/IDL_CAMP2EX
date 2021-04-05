@@ -1,4 +1,50 @@
+; NAME:
+;   Cirrus_mask
+;
+; PURPOSE:
+;   Finds colocations between SPN cirrus mask and RSP L1C
+;   Saves cirrus files in format compatible to RSP L1C
+;
+; :Dependencies:
+;    uses H5_PARSE
+;
+; :Categories:
+;   remote sensing
+;
+;  :program outline
+;   - get settings
+;   - loop over dates
+;   - loop over files
+;   - find match in time
+;   - output file
+;
+; :Usage:
+;   To run: cirrus_mask,settings_file
+;   Settings_file.csv contains paths and dates to process 
+;   Settings_file.csv also contains output folder, etc.
+;   Settings_file.csv also contains path to SPN data
+;
+; :Examples:
+;     
+;
+; :Author:
+;    Bastiaan van Diedenhoven
+;    Research Scientist
+;    Columbia University Center for Climate System Research & NASA GISS
+;    2880 Broadway
+;    New York, NY 10025
+;    Tel: +1 212 678 5512
+;    Email: bvandiedenhoven@gmail.com
+;    Email: bv2154@columbia.edu
+;
+; :History:
+;     created: <<5 April 2021
+;---------------------------------
+;switches
+
 pro Cirrus_mask,settings_file
+
+
 
 settings=read_csv(settings_file,N_TABLE_HEADER=1,TABLE_HEADER=settings_header)
 dates=STRCOMPRESS(settings.field1,/REMOVE_ALL)
