@@ -24,7 +24,7 @@
 ;    2880 Broadway
 ;    New York, NY 10025
 ;    Tel: +1 212 678 5512
-;    Email: bastiaan.vandiedenhoven@nasa.gov
+;    Email: bvandiedenhoven@gmail.com
 ;    Email: bv2154@columbia.edu
 ;
 ; :History:
@@ -51,7 +51,7 @@ end_folder='_L2_V003/'
 
 prefix_cirrus_mask_folder='CAMP2EX-RSP1-SPNCirrusMask_P3B_'
 prefix_cirrus_mask_file=  'CAMP2EX-RSP1-SPNCirrusMask_P3B_'
-cirrus_mask_version='R2'
+cirrus_mask_version='R3'
 paths_cirrusmask='./HDF/'
 
 
@@ -63,12 +63,32 @@ prefix_out=campaign+'-RSP-CLOUD_P3_'
 revision='R0'
 ext='.ict'
 
+settings_file='settings_convert_L2cloud_2_ict.csv'
+settings=read_csv(settings_file,N_TABLE_HEADER=1,TABLE_HEADER=settings_header)
+campaign=STRCOMPRESS(settings.field01,/REMOVE_ALL)
+dates=STRCOMPRESS(settings.field02,/REMOVE_ALL)
+path_rsp=STRCOMPRESS(settings.field03,/REMOVE_ALL)
+prefix_folder=STRCOMPRESS(settings.field04,/REMOVE_ALL)
+end_folder=STRCOMPRESS(settings.field05,/REMOVE_ALL)
+prefix_file=STRCOMPRESS(settings.field06,/REMOVE_ALL)
+
+path_out=STRCOMPRESS(settings.field07,/REMOVE_ALL)
+prefix_file_out=STRCOMPRESS(settings.field08,/REMOVE_ALL)
+revision=STRCOMPRESS(settings.field09,/REMOVE_ALL)
+
+add_cirrus_mask=ROUND(settings.field10)
+stop
+;IF(add_cirrus_mask eq 1)THEN BEGIN
+;        path_SPN=STRCOMPRESS(settings.field10,/REMOVE_ALL)
+ndates=n_elements(dates)
+
+
 ;--- selection of variables:
 
 time_start_folder=6               ; time_start
 time_start_var=27               ; time_start
 timeformat='(F10.2)'
-
+stop, 'fix this'
 
 variable_names=[$ 
         'COLLOCATED_LATITUDE',$
