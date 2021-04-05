@@ -24,7 +24,7 @@ prefix_file=STRCOMPRESS(settings.field5,/REMOVE_ALL)
 path_out=STRCOMPRESS(settings.field6,/REMOVE_ALL)
 prefix_file_out=STRCOMPRESS(settings.field7,/REMOVE_ALL)
 version=STRCOMPRESS(settings.field8,/REMOVE_ALL)
-path_SPN=STRCOMPRESS(settings.field9[0],/REMOVE_ALL)
+path_SPN=STRCOMPRESS(settings.field[0],/REMOVE_ALL)
 
 parameters=['T_DIRECT_BEAM_TRANSMITTANCE_860','SPN_PROXY_OPTICAL_DEPTH_860','CIRRUS_MASK']
 Long_names=['Direct beam transmittance derived from SPN at 860 nm','Optical depth above aircraft derived from transmittance using Lambert-Beer law','Cirrus mask: 0 where COD>0.04 + transmittance is <0.2; 1 elsewhere']
