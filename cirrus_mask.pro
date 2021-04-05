@@ -1,25 +1,37 @@
 ;dates=['20190824','20190827','20190829','20190830','20190904','20190906','20190908','20190913','20190915','20190916','20190919','20190921','20190923','20190925','20190927','20190929','20191003','20191005']
-dates=['20190919']
+;dates=['20190919']
 ;zip RSP-SPNCirrusMask_20191005_V002.zip RSP-SPNCirrusMask_20191005T*V002*h5
+settings_file='settings.csv'
 
-ndates=n_elements(dates)
-path_SPN='../DATA/ssfr_cirrus_mask/'
-path_RSP='../DATA/L1C_V003/'
+; path_SPN='../DATA/ssfr_cirrus_mask/'
+; ;path_RSP='../DATA/L1C_V003/'
 
-prefix_folder='RSP1_'
-end_folder='_L1C_V003/'
+; prefix_folder='RSP1_'
+; end_folder='_L1C_V003/'
 
-prefix_file='RSP1-P3_L1C-RSPCOL-CollocatedRadiances_'
-end_file='.h5'
+; prefix_file='RSP1-P3_L1C-RSPCOL-CollocatedRadiances_'
+; 
+; prefix_file_out='CAMP2EX-RSP1-SPNCirrusMask_P3B_'
+; version='_R3'
+; path_out='HDF/'
 
-prefix_file_out='CAMP2EX-RSP1-SPNCirrusMask_P3B_'
-version='_R3'
-path_out='HDF/'
+settings=read_csv(settings_file,N_TABLE_HEADER=1,TABLE_HEADER=settings_header)
+dates=STRCOMPRESS(settings.field1,/REMOVE_ALL)
+path_rsp=STRCOMPRESS(settings.field2,/REMOVE_ALL)
+prefix_folder=STRCOMPRESS(settings.field3,/REMOVE_ALL)
+end_folder=STRCOMPRESS(settings.field4,/REMOVE_ALL)
+prefix_file=STRCOMPRESS(settings.field5,/REMOVE_ALL)
+path_out=STRCOMPRESS(settings.field6,/REMOVE_ALL)
+prefix_file_out=STRCOMPRESS(settings.field7,/REMOVE_ALL)
+version=STRCOMPRESS(settings.field8,/REMOVE_ALL)
+path_SPN=STRCOMPRESS(settings.field9[0],/REMOVE_ALL)
 
 parameters=['T_DIRECT_BEAM_TRANSMITTANCE_860','SPN_PROXY_OPTICAL_DEPTH_860','CIRRUS_MASK']
 Long_names=['Direct beam transmittance derived from SPN at 860 nm','Optical depth above aircraft derived from transmittance using Lambert-Beer law','Cirrus mask: 0 where COD>0.04 + transmittance is <0.2; 1 elsewhere']
 Fill_value=[-999,-999,-999]
 
+ndates=n_elements(dates)
+end_file='.h5'
 
 for idate = 0, ndates-1 do begin
     folder=prefix_folder+dates[idate]+end_folder
