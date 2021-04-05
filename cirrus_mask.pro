@@ -1,19 +1,4 @@
-;dates=['20190824','20190827','20190829','20190830','20190904','20190906','20190908','20190913','20190915','20190916','20190919','20190921','20190923','20190925','20190927','20190929','20191003','20191005']
-;dates=['20190919']
-;zip RSP-SPNCirrusMask_20191005_V002.zip RSP-SPNCirrusMask_20191005T*V002*h5
-settings_file='settings.csv'
-
-; path_SPN='../DATA/ssfr_cirrus_mask/'
-; ;path_RSP='../DATA/L1C_V003/'
-
-; prefix_folder='RSP1_'
-; end_folder='_L1C_V003/'
-
-; prefix_file='RSP1-P3_L1C-RSPCOL-CollocatedRadiances_'
-; 
-; prefix_file_out='CAMP2EX-RSP1-SPNCirrusMask_P3B_'
-; version='_R3'
-; path_out='HDF/'
+pro Cirrus_mask,settings_file
 
 settings=read_csv(settings_file,N_TABLE_HEADER=1,TABLE_HEADER=settings_header)
 dates=STRCOMPRESS(settings.field1,/REMOVE_ALL)
@@ -24,7 +9,7 @@ prefix_file=STRCOMPRESS(settings.field5,/REMOVE_ALL)
 path_out=STRCOMPRESS(settings.field6,/REMOVE_ALL)
 prefix_file_out=STRCOMPRESS(settings.field7,/REMOVE_ALL)
 version=STRCOMPRESS(settings.field8,/REMOVE_ALL)
-path_SPN=STRCOMPRESS(settings.field[0],/REMOVE_ALL)
+path_SPN=STRCOMPRESS(settings.field9[0],/REMOVE_ALL)
 
 parameters=['T_DIRECT_BEAM_TRANSMITTANCE_860','SPN_PROXY_OPTICAL_DEPTH_860','CIRRUS_MASK']
 Long_names=['Direct beam transmittance derived from SPN at 860 nm','Optical depth above aircraft derived from transmittance using Lambert-Beer law','Cirrus mask: 0 where COD>0.04 + transmittance is <0.2; 1 elsewhere']
@@ -34,13 +19,16 @@ ndates=n_elements(dates)
 end_file='.h5'
 
 for idate = 0, ndates-1 do begin
-    folder=prefix_folder+dates[idate]+end_folder
-    files_rsp=FILE_SEARCH(path_RSP+folder+prefix_file+'*'+end_file,COUNT=nfiles)
+    folder=prefix_folder[idate]+dates[idate]+end_folder[idate]
+    files_rsp=FILE_SEARCH(path_RSP[idate]+folder+prefix_file[idate]+'*'+end_file,COUNT=nfiles)
     print,dates[idate],' nfiles:',nfiles
     file_spn='SPN-'+dates[idate]+'-cirrus-mask.h5'
     check_spn=FILE_SEARCH(path_SPN+file_spn,COUNT=nfiles_spn)   
         
-    IF(nfiles_spn eq 1)THEN data_spn=h5_PARSE(path_SPN+file_spn,/READ_DATA) else stop
+    IF(nfiles_spn eq 1)THEN data_spn=h5_PARSE(path_SPN+file_spn,/READ_DATA) else BEGIN
+        print,'No SPN data for this date'
+        CONTINUE
+    ENDELSE 
     
     for ifile = 0, nfiles-1 do begin
         data_rsp=h5_PARSE(files_rsp[ifile],/READ_DATA)
@@ -69,10 +57,10 @@ for idate = 0, ndates-1 do begin
         file_end1=STRMID(files_rsp[ifile],40,41,/REVERSE_OFFSET)
         parts=STRSPLIT(file_end1,'T',/EXTRACT)
         parts2=STRSPLIT(parts[1],'Z',/EXTRACT)
-        file_end=parts[0]+parts2[0]+version+'.h5'
+        file_end=parts[0]+parts2[0]+version[idate]+'.h5'
 ;        stop
 
-        fid = H5F_CREATE(path_out+prefix_file_out+file_end)
+        fid = H5F_CREATE(path_out[idate]+prefix_file_out[idate]+file_end)
         dataspace_id_attr = H5S_CREATE_SIMPLE(1)
         
         ;Global attributes
