@@ -1,0 +1,4 @@
+﻿Campaign,Date,path to RSP data,part of path before date,part of path after date,part of file before date,path out,file out prefix,file out end,add_cirrus_mask (1 = yes),Path to SPN files,prefix_cirrus_mask_file,cirrus mask version
+CAMP2Ex,20190919,/Users/bvandied/CAMP2Ex/DATA/L1C_V003/,RSP1_,_L1C_V003/,RSP1-P3_L1C-RSPCOL-CollocatedRadiances_,./ICT/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R3,1,HDF,CAMP2EX-RSP1-SPNCirrusMask_P3B_,R3
+CAMP2Ex,20191010,/Users/bvandied/CAMP2Ex/DATA/L1C_V003/,RSP1_,_L1C_V003/,RSP1-P3_L1C-RSPCOL-CollocatedRadiances_,./ICT/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R3,1,HDF,CAMP2EX-RSP1-SPNCirrusMask_P3B_,R3
+CAMP2Ex,20190919,/Users/bvandied/CAMP2Ex/DATA/L1C_V003/,RSP1_,_L1C_V003/,RSP1-P3_L1C-RSPCOL-CollocatedRadiances_,./ICT/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R3,1,HDF,CAMP2EX-RSP1-SPNCirrusMask_P3B_,R3
