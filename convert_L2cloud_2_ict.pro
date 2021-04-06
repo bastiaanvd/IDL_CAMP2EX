@@ -95,6 +95,7 @@ folder_names=[$
         'DATA'$
 ]
 
+;used for arrays with more than one (time) dimension
 select_item=[$,
         0,$;lat
         0,$;lon
@@ -113,7 +114,6 @@ select_item=[$,
 short_names=[$
         'Lat',$
         'Lon',$
-        ;        'Cloud_mask',$        
         'Quality_flag',$        
         'CTH',$ 
         'Liquid_index',$
@@ -140,7 +140,6 @@ standard_names=[$
 description=[$
         '',$
         '',$
-        ;        'if both bits (0+1) or (2+4) set, then cloud detected. If bit 3 set cloud detected at 1880 nm',$
         'bit 0: only 1 test detected cloud; bit 1 or 2: bi-spectral size extrapolation; bit 3,4,5 or 6: COT extrapolation; 255 = no cloud',$
         'multi-angle parralax',$
         'at 865nm, generally <0.3 indicates ice top',$
@@ -155,7 +154,6 @@ description=[$
 formats=[$
         '(F8.4)',$              ;lat
         '(F8.4)',$              ;lon        
-        ;        '(I3)',$              ;mask
         '(I3)',$              ;quality
         '(I5)',$              ;cth
         '(F8.3)',$              ;LI        
