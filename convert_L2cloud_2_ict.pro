@@ -29,41 +29,18 @@
 ;
 ; :History:
 ;     created: 13 July, 2020
-;     updated21 July, 2020: added cirrus mask, 
+;     updated 21 July, 2020: added cirrus mask, 
+;     updated 6 April, 2021: added settings file
 ;---------------------------------
 ;switches
 switch_print_vars=0            ; set to print out all variables in hdf file
 switch_save=1; set to save to file
 switch_print=1                  ;set to print to screen
-add_cirrus_mask=1
 
 ;settings:
-campaign='CAMP2Ex'
-platform='NASA P3'
-path='../DATA/L2_V003/
-prefix='RSP1-P3_L2-RSPCLOUD-Clouds_'
-prefix_folder='RSP1_'
-end_folder='_L2_V003/'
-;prefix='CAMP2EX-RSP1-CLD_P3B_'
-;prefix_folder='CAMP2EX-RSP1-CLD_P3B_'
-;end_folder='_R2/'
-
-
-prefix_cirrus_mask_folder='CAMP2EX-RSP1-SPNCirrusMask_P3B_'
-prefix_cirrus_mask_file=  'CAMP2EX-RSP1-SPNCirrusMask_P3B_'
-cirrus_mask_version='R3'
-paths_cirrusmask='./HDF/'
-
-
-dates=['20190916']
-ndates=n_elements(dates)
-
-path_out='./ICT/'
-prefix_out=campaign+'-RSP-CLOUD_P3_'
-revision='R0'
 ext='.ict'
 
-settings_file='settings_convert_L2cloud_2_ict.csv'
+settings_file='settings_convert_L2cloud_2_ict_test2.csv'
 settings=read_csv(settings_file,N_TABLE_HEADER=1,TABLE_HEADER=settings_header)
 campaign=STRCOMPRESS(settings.field01,/REMOVE_ALL)
 dates=STRCOMPRESS(settings.field02,/REMOVE_ALL)
@@ -73,22 +50,18 @@ end_folder=STRCOMPRESS(settings.field05,/REMOVE_ALL)
 prefix_file=STRCOMPRESS(settings.field06,/REMOVE_ALL)
 
 path_out=STRCOMPRESS(settings.field07,/REMOVE_ALL)
-prefix_file_out=STRCOMPRESS(settings.field08,/REMOVE_ALL)
+prefix_out=STRCOMPRESS(settings.field08,/REMOVE_ALL)
 revision=STRCOMPRESS(settings.field09,/REMOVE_ALL)
 
-add_cirrus_mask=ROUND(settings.field10)
-stop
-;IF(add_cirrus_mask eq 1)THEN BEGIN
-;        path_SPN=STRCOMPRESS(settings.field10,/REMOVE_ALL)
-ndates=n_elements(dates)
+add_cirrus_mask=FIX(settings.field10)
 
+ndates=n_elements(dates)
 
 ;--- selection of variables:
 
-time_start_folder=6               ; time_start
-time_start_var=27               ; time_start
+time_variable='PRODUCT_TIME_SECONDS'
+time_folder='DATA'
 timeformat='(F10.2)'
-stop, 'fix this'
 
 variable_names=[$ 
         'COLLOCATED_LATITUDE',$
@@ -145,13 +118,24 @@ short_names=[$
         'Reff_rad_2260' $
         ]
 
-
+standard_names=[$
+        'None',$ 
+        'None',$ 
+        'None',$ 
+        'CldMacro_CTH_VertCol_None',$ 
+        'None',$ 
+        'CldOpt_OD_VertCol_Red',$ 
+        'CldMicro_EffSize_VertCol_Red',$ 
+        'CldMicro_EffVar_VertCol_Red',$ 
+        'CldMicro_EffSize_VertCol_IR',$ 
+        'CldMicro_EffSize_VertCol_IR' $ 
+]
 
 description=[$
         '',$
         '',$
 ;        'if both bits (0+1) or (2+4) set, then cloud detected. If bit 3 set cloud detected at 1880 nm',$
-        'bit 0: only 1 test detected cloud; bit 1 or 2: bi-spectral size extrapolation; bit 3,4,5 or 6: COT extrapolation; fill value = no cloud',$
+        'bit 0: only 1 test detected cloud; bit 1 or 2: bi-spectral size extrapolation; bit 3,4,5 or 6: COT extrapolation; 255 = no cloud',$
         'multi-angle parralax',$
         'at 865nm, generally <0.3 indicates ice top',$
         'Using polarimetry drop size or otherwise bi-spectral 2260nm size, or otherwise reff=10',$
@@ -168,7 +152,7 @@ formats=[$
 ;        '(I3)',$              ;mask
         '(I3)',$              ;quality
         '(I5)',$              ;cth
-        '(F8.3)',$              ;cot        
+        '(F8.3)',$              ;LI        
         '(F7.2)',$              ;cot
         '(F7.2)',$              ;reff_pol
         '(F8.3)',$              ;veff_pol
@@ -176,18 +160,16 @@ formats=[$
         '(F7.2)'$              ;reff
         ]
 
-nvar=n_elements(select_data_vars)
-nvar_write=nvar
-IF(add_cirrus_mask)THEN nvar_write=nvar_write+1
+nvar=n_elements(variable_names)
 
 FOR Idate=0,ndates-1 DO BEGIN
 
    date=dates[idate]
-   files=FILE_SEARCH(path+prefix_folder+date+end_folder+prefix+date+'*.h5',COUNT=nfiles)
+   files=FILE_SEARCH(path_rsp[idate]+prefix_folder[idate]+date+end_folder[idate]+prefix_file[idate]+date+'*.h5',COUNT=nfiles)
    
    IF(nfiles eq 0)THEN BEGIN
       print,'no file found for ',date
-      print,path+prefix_folder+date+end_folder+prefix+date+'*.h5'
+      print,path_rsp[idate]+prefix_folder[idate]+date+end_folder[idate]+prefix_file[idate]+date+'*.h5'
       CONTINUE
    ENDIF
    filename=files[0]
@@ -208,6 +190,9 @@ FOR Idate=0,ndates-1 DO BEGIN
       stop
    ENDIF
 
+   time_start_folder=where(TAG_NAMES(data) eq time_folder)
+   time_start_var=where(TAG_NAMES(data.(time_start_folder)) eq time_variable)
+
    select_folder=INTARR(nvar)
    select_data_vars=INTARR(nvar)
         
@@ -221,12 +206,16 @@ FOR Idate=0,ndates-1 DO BEGIN
    day=STRMID(date,6,2)
    CALDAT,systime(/JULIAN,/UTC),m_now,d_now,y_now
 
+   nvar_write=nvar
+   IF(add_cirrus_mask[idate])THEN nvar_write=nvar+1
+
+
    header='xx , 1001'
    header=[header,$
            'van Diedenhoven, Bastiaan',$
            'NASA Goddard Institute for Space Studies', $
            'RSP cloud retrievals', $
-           campaign]
+           data.experiment._data[0]]
    
    header=[header,$
           '1, 1']
@@ -236,13 +225,13 @@ FOR Idate=0,ndates-1 DO BEGIN
    
 
    header=[header,$
-           '0']                 ;Data Interval
+           '0.86']                 ;Data Interval
    
    header=[header,$
            'Time_start, seconds']
    
    header=[header,$
-           STRING(nvar_write+2,format='(I2)')] ;Number of variables + UTC_stop & UTC_mid
+           STRING(nvar_write,format='(I2)')] ;Number of variables 
    
       scale_srt='1'
    for ivar=1,nvar_write-1 DO scale_srt=scale_srt+', 1'
@@ -252,9 +241,10 @@ FOR Idate=0,ndates-1 DO BEGIN
    
    miss_srt='-999'
       
-   ;for ivar=1,nvar_write-1 DO miss_srt=miss_srt+', -999'
-   for ivar=1,nvar-1 DO miss_srt=miss_srt+', '+STRING(data.(select_folder[ivar]).(select_data_vars[ivar]).FILL_VALUE._data,FORMAT='(I5)')
-   IF(add_cirrus_mask)THEN miss_srt=miss_srt+', -999'
+   for ivar=1,nvar-1 DO miss_srt=miss_srt+', -999'
+   ;for ivar=1,nvar-1 DO miss_srt=miss_srt+', '+STRING(data.(select_folder[ivar]).(select_data_vars[ivar]).FILL_VALUE._data,FORMAT='(I5)')
+   ;ICT files cannot handle fill values of 255 for flags!
+   IF(add_cirrus_mask[idate])THEN miss_srt=miss_srt+', -999'
    
    
    header=[header,$
@@ -272,20 +262,20 @@ FOR Idate=0,ndates-1 DO BEGIN
       IF(icheckunits ne -1)THEN var_units=data.(select_folder[ivar]).(select_data_vars[ivar]).units._data ELSE var_units='dimensionless'
 
       header=[header,$
-              short_names[ivar]+', '+var_units+', '+var_name+' '+description[ivar]]
+              short_names[ivar]+', '+var_units+', '+standard_names[ivar]+', '+var_name+' '+description[ivar]]
                                 ;print,short_names(ivar)+', '+var_units(ivar)+', '+var_names(ivar)
    ENDFOR
 
-        IF(add_cirrus_mask)THEN  header=[header,$
-                                        'Cirrus_mask, none, SPN cirrus mask (1= clear, 0= cirrus detected)']
+        IF(add_cirrus_mask[idate])THEN  header=[header,$
+                                        'Cirrus_mask, none, none, SPN cirrus mask (1= clear, 0= cirrus detected)']
 
       header=[header,$
            '0']                 ;#special comments (Unique to 1 file)
    
-   comments='PI_CONTACT_INFO: Address: 2880 Broadway, New York, NY 10025; email: bv2154@columbia.edu'
+   comments='PI_CONTACT_INFO: Address: 2880 Broadway, New York, NY 10025; email: bv2154@columbia.edu, bvandiedenhoven@gmail.com'
    
    comments=[comments,$
-             'PLATFORM: '+platform]
+             'PLATFORM: '+data.PLATFORM_DESCRIPTION._data]
    
    comments=[comments,$
              'LOCATION: Latitute, Longitude included in file. Approximately directly under flight path.']  
@@ -307,9 +297,13 @@ FOR Idate=0,ndates-1 DO BEGIN
    comments=[comments,$
              'ULOD_VALUE: None']
    comments=[comments,$
-             'DM_CONTACT_INFO: Bastiaan Van Diedenhoven <bv2154@columbia.edu>, Cairns, Brian (GISS-6110) <brian.cairns@nasa.gov>, Wasilewski, Andrzej P (GISS-611.0)[SciSpace LLC] <andrzej.p.wasilewski@nasa.gov>, Mikhail Alexandrov <mda14@columbia.edu>']
+             'LLOD_FLAG: -8888']
    comments=[comments,$
-             'PROJECT_INFO: '+campaign+' mission']
+             'LLOD_VALUE: None']
+   comments=[comments,$
+             'DM_CONTACT_INFO: Wasilewski, Andrzej P (GISS-611.0)[SciSpace LLC] <andrzej.p.wasilewski@nasa.gov>']
+   comments=[comments,$
+             'PROJECT_INFO: '+data.experiment._data[0]+' mission']
    comments=[comments,$
              'STIPULATIONS_ON_USE: Please contact PI or DM for assistance for usage.']
    comments=[comments,$
@@ -322,7 +316,7 @@ FOR Idate=0,ndates-1 DO BEGIN
             'Please also read the cloud readme text']
          
    comments=[comments,$
-             'REVISION: '+revision]
+             'REVISION: '+revision[idate]]
    
    
    ncomments=n_elements(comments)
@@ -334,7 +328,7 @@ FOR Idate=0,ndates-1 DO BEGIN
 
    short_names_line='Time_start   '
    FOR ivar=0,nvar-1 DO short_names_line=short_names_line+', '+short_names[ivar]
-        IF(add_cirrus_mask)THEN short_names_line=short_names_line+', Cirrus_mask'
+        IF(add_cirrus_mask[idate])THEN short_names_line=short_names_line+', Cirrus_mask'
    header=[header,$
            short_names_line]
 
@@ -343,23 +337,32 @@ FOR Idate=0,ndates-1 DO BEGIN
 
 
    IF(switch_save)THEN BEGIN
-      OPENW,LUN,path_out+prefix_out+date+'_'+revision+ext,/GET_LUN
+      OPENW,LUN,path_out[idate]+prefix_out[idate]+date+'_'+revision[idate]+ext,/GET_LUN
       for ihead= 0,nheader-1 DO printF,lun,header[ihead]
    ENDIF
    
    IF(switch_print)THEN for ihead= 0,nheader-1 DO print,header[ihead]
    
-FOR Ifile=0,nfiles-1 DO BEGIN
+;----start writing data
+IF(add_cirrus_mask[idate])THEN BEGIN
+        path_cirrusmask=STRCOMPRESS(settings.field11[idate],/REMOVE_ALL)
+        prefix_cirrus_mask_file=STRCOMPRESS(settings.field12[idate],/REMOVE_ALL)
+        cirrus_mask_version=STRCOMPRESS(settings.field13[idate],/REMOVE_ALL)
+ENDIF
+
+FOR Ifile=0,nfiles-1 DO BEGIN 
         filename=files[Ifile]
         print,'processing file ',FILE_BASENAME(filename)
         data=H5_PARSE(filename,/READ)
-        IF(add_cirrus_mask)THEN BEGIN
+        IF(add_cirrus_mask[idate])THEN BEGIN
                 parts=STRSPLIT(filename,'_',/EXTRACT)
-                cirrus_mask_folder=prefix_cirrus_mask_folder+date+'/'
-                cirrus_mask_file=prefix_cirrus_mask_file+parts[6]+'_'+cirrus_mask_version+'.h5'
-                check_cirrus_file=FILE_SEARCH(paths_cirrusmask+cirrus_mask_folder+cirrus_mask_file,count=cirrus_file_check)
-                IF(cirrus_file_check eq 1)THEN data_cirrus=H5_PARSE(paths_cirrusmask+cirrus_mask_folder+cirrus_mask_file,/READ)
-                
+                parts2=STRSPLIT(parts[6],'T',/EXTRACT)
+                parts3=STRSPLIT(parts2[1],'Z',/EXTRACT)
+
+                cirrus_mask_folder=prefix_cirrus_mask_file+date+'_'+cirrus_mask_version+'/'
+                cirrus_mask_file=prefix_cirrus_mask_file+parts2[0]+parts3[0]+'_'+cirrus_mask_version+'.h5'
+                check_cirrus_file=FILE_SEARCH(path_cirrusmask+cirrus_mask_folder+cirrus_mask_file,count=cirrus_file_check)
+                IF(cirrus_file_check eq 1)THEN data_cirrus=H5_PARSE(path_cirrusmask+cirrus_mask_folder+cirrus_mask_file,/READ)
         ENDIF
      
 
@@ -397,7 +400,7 @@ FOR Ifile=0,nfiles-1 DO BEGIN
         print_line=print_line+', '+ line_print;first cot gt 0
         
         ENDFOR
-      IF(add_cirrus_mask)THEN $
+      IF(add_cirrus_mask[idate])THEN $
         IF(cirrus_file_check eq 1) THEN print_line=print_line+', '+STRING(data_cirrus.CIRRUS_MASK._data[idata],FORMAT='(I4)') ELSE print_line=print_line+', -999'
 
       IF(switch_print)THEN print,idata,print_line
