@@ -40,7 +40,7 @@ switch_print=1                  ;set to print to screen
 ;settings:
 ext='.ict'
 
-settings_file='settings_convert_L2cloud_2_ict_test2.csv'
+settings_file='settings_convert_L2cloud_2_ict.csv'
 settings=read_csv(settings_file,N_TABLE_HEADER=1,TABLE_HEADER=settings_header)
 campaign=STRCOMPRESS(settings.field01,/REMOVE_ALL)
 dates=STRCOMPRESS(settings.field02,/REMOVE_ALL)
