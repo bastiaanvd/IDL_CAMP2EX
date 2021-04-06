@@ -106,7 +106,14 @@ for idate = 0, ndates-1 do begin
         file_end=parts[0]+parts2[0]+version[idate]+'.h5'
 ;        stop
 
-        fid = H5F_CREATE(path_out[idate]+prefix_file_out[idate]+file_end)
+        folder_out=path_out[idate]+prefix_file_out[idate]+dates[idate]+version[idate]+'/'
+        test_folder=FILE_SEARCH(folder_out, /TEST_DIRECTORY,count=ntest_folder)
+        IF(ntest_folder eq 0)THEN BEGIN
+            print,'creating folder '+folder_out
+            SPAWN,'mkdir '+folder_out
+        ENDIF
+
+        fid = H5F_CREATE(folder_out+prefix_file_out[idate]+file_end)
         dataspace_id_attr = H5S_CREATE_SIMPLE(1)
         
         ;Global attributes
