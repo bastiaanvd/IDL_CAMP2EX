@@ -2,7 +2,7 @@
 ;   convert_L2Cloud_2_ict
 ;
 ; PURPOSE:
-;   converts RSP L2 hdf files to ICARTT format
+;   converts RSP L2 hdf cloud files to ICARTT format
 ;
 ; :Dependencies:
 ;    uses H5_PARSE
@@ -11,8 +11,17 @@
 ;   remote sensing
 ;
 ;  :program outline
+;   - get settings
 ;   - loop over dates
-;   - 
+;   - loop over files
+;   - output file
+;
+; :Usage:
+;   To run: convert_L2cloud_2_ict,settings_file
+;   Settings_file.csv contains paths and dates to process 
+;   Settings_file.csv also contains output folder, etc.
+;   Settings_file.csv also cirrus above aricraft mask on/off switch and contains path to cirrusmask data
+
 ;
 ; :Examples:
 ;     
