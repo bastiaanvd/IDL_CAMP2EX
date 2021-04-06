@@ -1,3 +1,3 @@
 ﻿Campaign,Date,path to RSP data,part of path before date,part of path after date,part of file before date,path out,file out prefix,revision number,add_cirrus_mask (1 = yes),Path to cloudmask files,prefix_cirrus_mask_file,cirrus mask version
-CAMP2Ex,20190916,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1_,_L2_V003/,RSP1-P3_L2-RSPCLOUD-Clouds_,./ICT/,CAMP2EX-RSP1-RSP-CLOUD_P3_,R0,0,,,
-CAMP2Ex,20190919,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1_,_L2_V003/,RSP1-P3_L2-RSPCLOUD-Clouds_,./ICT/,CAMP2EX-RSP1-RSP-CLOUD_P3_,R0,1,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,R3
+CAMP2Ex,20190916,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1_,_L2_V003/,RSP1-P3_L2-RSPCLOUD-Clouds_,./ICT/,CAMP2EX-RSP1-RSP-CLOUD_P3_,R0,1,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,R2
+CAMP2Ex,20190919,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1_,_L2_V003/,RSP1-P3_L2-RSPCLOUD-Clouds_,./ICT/,CAMP2EX-RSP1-RSP-CLOUD_P3_,R0,1,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,R2
