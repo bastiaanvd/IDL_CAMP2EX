@@ -42,7 +42,7 @@
 ;     updated 6 April, 2021: added settings file
 ;---------------------------------
 ;switches
-pro convert_L2cloud_2_ict,settings_file,$
+pro convert_L2cloud_2_ict,settings_file,variables_file,$
         switch_show_vars=switch_show_vars,$ 
         switch_no_save=switch_no_save, $ 
         switch_print=switch_print
@@ -51,9 +51,11 @@ pro convert_L2cloud_2_ict,settings_file,$
 ;switch_no_save=1; set to NOT save to file
 ;switch_print=1                  ;set to print info to screen
 
-;reading settings file:
-;settings_file='settings_convert_L2cloud_2_ict.csv'
 
+;settings_file='settings_convert_L2cloud_2_ict.csv'
+;variables_file='variables_convert_L2cloud_2_ict.csv'
+
+;reading settings file:
 settings=read_csv(settings_file,N_TABLE_HEADER=1,TABLE_HEADER=settings_header)
 campaign=STRCOMPRESS(settings.field01,/REMOVE_ALL)
 dates=STRCOMPRESS(settings.field02,/REMOVE_ALL)
@@ -74,106 +76,22 @@ ext='.ict'
 
 ;--- selection of variables:
 
-time_variable='PRODUCT_TIME_SECONDS'
-time_folder='DATA'
-timeformat='(F10.2)'
+variables_data=read_csv(variables_file,N_TABLE_HEADER=1,TABLE_HEADER=settings_header)
 
-variable_names=[$ 
-        'COLLOCATED_LATITUDE',$
-        'COLLOCATED_LONGITUDE',$
-        'CLOUD_QUALITY',$
-        'CLOUD_TOP_ALTITUDE',$
-        'CLOUD_LIQUID_INDEX',$
-        'CLOUD_BOW_OPTICAL_THICKNESS',$; this is not used!
-        'CLOUD_BOW_DROPLET_EFFECTIVE_RADIUS',$
-        'CLOUD_BOW_DROPLET_EFFECTIVE_VARIANCE',$
-        'CLOUD_BI_SPEC_PARTICLE_EFFECTIVE_RADIUS',$
-        'CLOUD_BI_SPEC_PARTICLE_EFFECTIVE_RADIUS'$ 
-]
+time_variable=variables_data.(0)[0]
+time_folder=variables_data.(1)[0]
+timeformat=variables_data.(3)[0]
+time_short_name=variables_data.(4)[0]
 
-folder_names=[$
-        'GEOMETRY',$ 
-        'GEOMETRY'  ,$     
-        'DATA',$ 
-        'DATA',$ 
-        'DATA',$ 
-        'DATA',$ 
-        'DATA',$ 
-        'DATA',$ 
-        'DATA',$ 
-        'DATA'$
-]
+nvar=n_elements(variables_data.(0))-1
+variable_names=variables_data.(0)[1:nvar]
+folder_names=variables_data.(1)[1:nvar]
+select_item=variables_data.(2)[1:nvar]
+formats=variables_data.(3)[1:nvar]
+short_names=variables_data.(4)[1:nvar]
+standard_names=variables_data.(5)[1:nvar]
+description=variables_data.(6)[1:nvar]
 
-;used for arrays with more than one (time) dimension
-select_item=[$,
-        0,$;lat
-        0,$;lon
-        0,$;quality
-        1,$ ;cth
-        1,$ ;liquid index
-        0,$ ;cot
-        0,$  ;reff_pol    
-        0,$  ;veff_pol    
-        -1,$  ;reff_1590
-        -2$  ;reff_2260    
-]
-
-
-
-short_names=[$
-        'Lat',$
-        'Lon',$
-        'Quality_flag',$        
-        'CTH',$ 
-        'Liquid_index',$
-        'COT' ,     $ 
-        'Reff_pol' ,$
-        'Veff_pol' ,$
-        'Reff_rad_1590', $
-        'Reff_rad_2260' $
-]
-
-standard_names=[$
-        'None',$ 
-        'None',$ 
-        'None',$ 
-        'CldMacro_CTH_VertCol_None',$ 
-        'None',$ 
-        'CldOpt_OD_VertCol_Red',$ 
-        'CldMicro_EffSize_VertCol_Red',$ 
-        'CldMicro_EffVar_VertCol_Red',$ 
-        'CldMicro_EffSize_VertCol_IR',$ 
-        'CldMicro_EffSize_VertCol_IR' $ 
-]
-
-description=[$
-        '',$
-        '',$
-        'bit 0: only 1 test detected cloud; bit 1 or 2: bi-spectral size extrapolation; bit 3,4,5 or 6: COT extrapolation; 255 = no cloud',$
-        'multi-angle parralax',$
-        'at 865nm, generally <0.3 indicates ice top',$
-        'Using polarimetry drop size or otherwise bi-spectral 2260nm size, or otherwise reff=10',$
-        'Polarimetry using 865 nm',$
-        'Polarimetry using 865 nm',$
-        'bi-spectral using 1590 nm',$
-        'bi_spectral using 2260 nm'$
-]
-
-
-formats=[$
-        '(F8.4)',$              ;lat
-        '(F8.4)',$              ;lon        
-        '(I3)',$              ;quality
-        '(I5)',$              ;cth
-        '(F8.3)',$              ;LI        
-        '(F7.2)',$              ;cot
-        '(F7.2)',$              ;reff_pol
-        '(F8.3)',$              ;veff_pol
-        '(F7.2)',$              ;reff
-        '(F7.2)'$              ;reff
-]
-
-nvar=n_elements(variable_names)
 
 FOR Idate=0,ndates-1 DO BEGIN
 
@@ -186,7 +104,7 @@ FOR Idate=0,ndates-1 DO BEGIN
                 CONTINUE
         END
         filename=files[0]
-        print,'processing file ',FILE_BASENAME(filename)
+        print,'processing date ',date
         data=H5_PARSE(filename,/READ)
 
         IF KEYWORD_SET(switch_show_vars)THEN BEGIN
@@ -331,7 +249,7 @@ FOR Idate=0,ndates-1 DO BEGIN
         header=[header,$
                 comments]
 
-        short_names_line='Time_start   '
+        short_names_line=time_short_name
         FOR ivar=0,nvar-1 DO short_names_line=short_names_line+', '+short_names[ivar]
         IF(add_cirrus_mask[idate])THEN short_names_line=short_names_line+', Cirrus_mask'
         header=[header,$
