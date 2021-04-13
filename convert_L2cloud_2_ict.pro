@@ -40,6 +40,7 @@
 ;     created: 13 July, 2020
 ;     updated 21 July, 2020: added cirrus mask, 
 ;     updated 6 April, 2021: added settings file
+;     updated 13 April, 2021: added variables file
 ;---------------------------------
 ;switches
 pro convert_L2cloud_2_ict,settings_file,variables_file,$
