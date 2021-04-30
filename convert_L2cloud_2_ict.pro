@@ -170,8 +170,8 @@ FOR Idate=0,ndates-1 DO BEGIN
                 scale_srt]
 
         miss_srt='-999'
-
-        for ivar=1,nvar-1 DO miss_srt=miss_srt+', -999'
+        for ivar=1,2 DO miss_srt=miss_srt+', -9999' ; lat lon need -9999
+        for ivar=3,nvar-1 DO miss_srt=miss_srt+', -999'
         ;for ivar=1,nvar-1 DO miss_srt=miss_srt+', '+STRING(data.(select_folder[ivar]).(select_data_vars[ivar]).FILL_VALUE._data,FORMAT='(I5)')
         ;ICT files cannot handle fill values of 255 for flags so put all to -999!
         IF(add_cirrus_mask[idate])THEN miss_srt=miss_srt+', -999'
