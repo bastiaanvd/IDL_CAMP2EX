@@ -291,9 +291,29 @@ FOR Idate=0,ndates-1 DO BEGIN
 
 
                 ndata=n_elements(data.(time_start_folder).(time_start_var)._data)
-                FOR idata=0,ndata-1 DO BEGIN
 
-                        print_line=STRING(data.(time_start_folder).(time_start_var)._data[idata],FORMAT=timeformat)
+                time_mid=data.(time_start_folder).(time_start_var)._data
+                time_start=dblarr(ndata)
+                time_stop=dblarr(ndata)
+                FOR idata=1,ndata-1 DO BEGIN
+                        d_time=time_mid[idata]-time_mid[idata-1]
+                        IF(d_time gt 1.)THEN d_time=0.86
+                        time_start[idata]= time_mid[idata]-d_time/2.
+                        time_stop[idata]= time_mid[idata]+d_time/2.
+                ENDFOR
+                time_start[0]=time_mid[0]-0.86/2.
+                time_stop[0]=time_mid[0]+0.86/2.
+
+
+                print,'Working on this!!'
+                stop
+
+                FOR idata=0,ndata-1 DO BEGIN
+                        
+                        print_line=time_start[idata]
+                        print_line=print_line+', '+time_stop[idata]
+                        print_line=print_line+', '+time_mid[idata]
+                        ;STRING(data.(time_start_folder).(time_start_var)._data[idata],FORMAT=timeformat)
                                 
                         FOR ivar=0,nvar-1 DO BEGIN
 
