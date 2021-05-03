@@ -155,7 +155,7 @@ FOR Idate=0,ndates-1 DO BEGIN
 
 
         header=[header,$
-                '0.86']                 ;Data Interval
+                '0']                 ;Data Interval
 
         header=[header,$
                 'Time_start, seconds']
@@ -169,9 +169,10 @@ FOR Idate=0,ndates-1 DO BEGIN
         header=[header,$
                 scale_srt]
 
-        miss_srt='-999'
-        for ivar=1,2 DO miss_srt=miss_srt+', -9999' ; lat lon need -9999
-        for ivar=3,nvar-1 DO miss_srt=miss_srt+', -999'
+        miss_srt='-999, -999, -999'; time_start, time_stop, time_mid
+        
+        for ivar=3,4 DO miss_srt=miss_srt+', -9999' ; lat lon need -9999
+        for ivar=5,nvar-1 DO miss_srt=miss_srt+', -999'
         ;for ivar=1,nvar-1 DO miss_srt=miss_srt+', '+STRING(data.(select_folder[ivar]).(select_data_vars[ivar]).FILL_VALUE._data,FORMAT='(I5)')
         ;ICT files cannot handle fill values of 255 for flags so put all to -999!
         IF(add_cirrus_mask[idate])THEN miss_srt=miss_srt+', -999'
@@ -295,27 +296,24 @@ FOR Idate=0,ndates-1 DO BEGIN
                 time_mid=data.(time_start_folder).(time_start_var)._data
                 time_start=dblarr(ndata)
                 time_stop=dblarr(ndata)
+                time_start[0]=time_mid[0]-0.86/2.
+                ;time_stop[0]=time_mid[0]+0.86/2.
                 FOR idata=1,ndata-1 DO BEGIN
                         d_time=time_mid[idata]-time_mid[idata-1]
                         IF(d_time gt 1.)THEN d_time=0.86
                         time_start[idata]= time_mid[idata]-d_time/2.
-                        time_stop[idata]= time_mid[idata]+d_time/2.
+                        time_stop[idata-1]= time_start[idata];time_mid[idata]+d_time/2.
                 ENDFOR
-                time_start[0]=time_mid[0]-0.86/2.
-                time_stop[0]=time_mid[0]+0.86/2.
-
-
-                print,'Working on this!!'
-                stop
+                time_stop[ndata-1]=time_mid[ndata-1]+0.86/2.
 
                 FOR idata=0,ndata-1 DO BEGIN
                         
-                        print_line=time_start[idata]
-                        print_line=print_line+', '+time_stop[idata]
-                        print_line=print_line+', '+time_mid[idata]
+                        print_line=STRING(time_start[idata],FORMAT=timeformat)
+                        print_line=print_line+', '+STRING(time_stop[idata],FORMAT=timeformat)
+                        print_line=print_line+', '+STRING(time_mid[idata],FORMAT=timeformat)
                         ;STRING(data.(time_start_folder).(time_start_var)._data[idata],FORMAT=timeformat)
                                 
-                        FOR ivar=0,nvar-1 DO BEGIN
+                        FOR ivar=2,nvar-1 DO BEGIN
 
                                 CASE 1 OF     
                                         (variable_names[ivar] eq 'CLOUD_BOW_OPTICAL_THICKNESS'):BEGIN ;cot
