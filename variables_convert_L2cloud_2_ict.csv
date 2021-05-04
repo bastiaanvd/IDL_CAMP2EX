@@ -1,7 +1,9 @@
 ﻿Variable_RSP_name,Variable_RSP_folder,Variable_RSP_index_select,formats,short_name,standard_name,description
-PRODUCT_TIME_SECONDS,DATA,0,(F10.2),Time_start,Time_start,seconds
-COLLOCATED_LATITUDE,GEOMETRY,0,(F8.4),Lat,None,
-COLLOCATED_LONGITUDE,GEOMETRY,0,(F8.4),Lon,None,
+PRODUCT_TIME_SECONDS,DATA,0,(F10.2),Time_start,none,minus delta time/2
+PRODUCT_TIME_SECONDS,DATA,0,(F10.2),Time_stop,none,plus delta time/2
+PRODUCT_TIME_SECONDS,DATA,0,(F10.2),Time_mid,none,
+COLLOCATED_LATITUDE,GEOMETRY,0,(F9.4),Lat,None,
+COLLOCATED_LONGITUDE,GEOMETRY,0,(F9.4),Lon,None,
 CLOUD_QUALITY,DATA,0,(I3),Quality_flag,None,"bit 0: only 1 test detected cloud; bit 1 or 2: bi-spectral size extrapolation; bit 3,4,5 or 6: COT extrapolation; 255 = no cloud"
 CLOUD_TOP_ALTITUDE,DATA,1,(I5),CTH,CldMacro_CTH_VertCol_None,multi-angle parralax
 CLOUD_LIQUID_INDEX,DATA,1,(F8.3),Liquid_index,None,"at 865nm, generally <0.3 indicates ice top"
