@@ -70,7 +70,6 @@ for idate = 0, ndates-1 do begin
     print,dates[idate],' nfiles:',nfiles
     file_spn='SPN-'+dates[idate]+'-cirrus-mask.h5'
     check_spn=FILE_SEARCH(path_SPN+file_spn,COUNT=nfiles_spn)   
-        
     IF(nfiles_spn eq 1)THEN data_spn=h5_PARSE(path_SPN+file_spn,/READ_DATA) else BEGIN
         print,'No SPN data for this date'
         CONTINUE
