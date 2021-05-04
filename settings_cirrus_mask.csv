@@ -1,4 +1,24 @@
 ﻿Date,path to RSP data,part of path before date,part of path after date,part of file before date,path out,file out prefix,file out end,Path to SPN files
-20190919,/Users/bvandied/CAMP2Ex/DATA/L1C_V003/,RSP1_,_L1C_V003/,RSP1-P3_L1C-RSPCOL-CollocatedRadiances_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
-20191010,/Users/bvandied/CAMP2Ex/DATA/L1C_V003/,RSP1_,_L1C_V003/,RSP1-P3_L1C-RSPCOL-CollocatedRadiances_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
-20190919,/Users/bvandied/CAMP2Ex/DATA/L1C_V003/,RSP1_,_L1C_V003/,RSP1-P3_L1C-RSPCOL-CollocatedRadiances_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190803,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190805,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190824,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190827,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190829,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190830,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190904,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190906,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190908,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190913,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190915,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190916,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190919,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190921,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190923,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190925,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190927,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20190929,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20191001,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20191003,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20191005,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20191009,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
+20191010,/Users/bvandied/CAMP2Ex/DATA/L2_V003/,RSP1-L2CLD_P3_,_R03/,RSP1-P3_L2-RSPCLOUD-Clouds_,./HDF/,CAMP2EX-RSP1-SPNCirrusMask_P3B_,_R2,/Users/bvandied/CAMP2Ex/DATA/ssfr_cirrus_mask/
