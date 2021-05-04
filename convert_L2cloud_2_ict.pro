@@ -287,7 +287,7 @@ FOR Idate=0,ndates-1 DO BEGIN
                         cirrus_mask_folder=prefix_cirrus_mask_file+date+'_'+cirrus_mask_version+'/'
                         cirrus_mask_file=prefix_cirrus_mask_file+parts2[0]+parts3[0]+'_'+cirrus_mask_version+'.h5'
                         check_cirrus_file=FILE_SEARCH(path_cirrusmask+cirrus_mask_folder+cirrus_mask_file,count=cirrus_file_check)
-                        IF(cirrus_file_check eq 1)THEN data_cirrus=H5_PARSE(path_cirrusmask+cirrus_mask_folder+cirrus_mask_file,/READ)
+                        IF(cirrus_file_check eq 1)THEN data_cirrus=H5_PARSE(path_cirrusmask+cirrus_mask_folder+cirrus_mask_file,/READ) ELSE print,'no cirrus mask file found'
                 ENDIF
 
 
@@ -300,11 +300,11 @@ FOR Idate=0,ndates-1 DO BEGIN
                 ;time_stop[0]=time_mid[0]+0.86/2.
                 FOR idata=1,ndata-1 DO BEGIN
                         d_time=time_mid[idata]-time_mid[idata-1]
-                        IF(d_time gt 1.)THEN d_time=0.86
+                        IF(d_time gt 1.)THEN d_time=0.8
                         time_start[idata]= time_mid[idata]-d_time/2.
                         time_stop[idata-1]= time_start[idata];time_mid[idata]+d_time/2.
                 ENDFOR
-                time_stop[ndata-1]=time_mid[ndata-1]+0.86/2.
+                time_stop[ndata-1]=time_mid[ndata-1]+0.8/2.
 
                 FOR idata=0,ndata-1 DO BEGIN
                         
@@ -353,7 +353,6 @@ FOR Idate=0,ndates-1 DO BEGIN
                 ENDFOR
 
         ENDFOR
-
         IF ~KEYWORD_SET(switch_no_save)THEN FREE_LUN,LUN
 ENDFOR
 
